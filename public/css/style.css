@@ -1,0 +1,36 @@
+.div-radius {
+width: 80px;
+height: 80px;
+border-radius: 40px;
+border:solid rgb(30,30,30)  1px;
+
+}
+
+
+.div-astrolabe_1 {
+   background:url(../img/xp2.png)  no-repeat -400px -22px;
+}
+
+.div-astrolabe_2 {
+   background:url(../img/xp2.png)  no-repeat -350px -200px;
+}
+
+.xp_ty_css{
+	background-color:red;
+}
+.xp_ly_css{
+	background-color:green;
+}
+span{
+  color: #AAAAAA;
+}
+.detailTitle
+{
+	text-align: center;
+	color: #AAAAAA;
+	margin:15px;
+}
+.detailExplain
+{
+	color:#666666
+}

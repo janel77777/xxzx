@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <title>占星骰子</title>
+  <link rel="stylesheet" href="../stylesheets/weui.css"/>
+  <link rel="stylesheet" href="../stylesheets/example.css"/> 
+  <link rel="stylesheet" href="../css/style.css"/> 
+</head>
+
+<body ontouchstart>
+ <div class="container" id="container"> 
+
+  <div class="page__hd">
+    <h1 style="text-align: center" class="page__title">咨询达人</h1> 
+  </div>
+  <div class="page__bd">  
+    <div class="weui-cells weui-cells_form weui-cell_select weui-cell_select-after">
+
+      <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">赏金</label></div>
+        <div class="weui-cell__bd">
+          <select class="weui-select" name="select" id='selectMoney'>
+            <option value="3">3元</option>
+            <option value="5">5元</option>
+            <option value="10">10元</option>
+          </select>
+
+        </div>
+      </div>
+      <div class="weui-cell">
+
+        <textarea class="weui-textarea" readonly="readonly" value='rrr'  id="aContent" rows="3">
+         <%= _data.question %></textarea>
+
+
+       </div>
+       <div class="weui-cell">
+        <div class="weui-cell__hd">投出了 [ <%= _data.xp %>  <%= _data.xz %>   <%= _data.gd %> ]</div>
+
+      </div>
+      <div class="weui-cell">
+        <div class="weui-cell__hd"><label for="" class="weui-label"></label></div>
+        <div class="weui-cell__bd">
+          <p  style="text-align: center" class="weui-msg__desc"  value=""  >请选择你的答案要求(可选，限一项)</p>
+          <p  style="text-align: center"> 
+            <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default">求治愈</a> 
+            <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default">求拍砖</a>
+            <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default">求专业</a>
+            <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default">随便撩</a>
+          </p>
+        </div>
+      </div> 
+      <div style="text-align: center">
+       <a  href="javascript:;" id="dashang" class="weui-btn weui-btn weui-btn_primary">打赏</a>
+     </div>
+   </div> 
+
+ </div>
+
+</div>
+<script src="../js/zepto.min.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="../js/weui.min.js"></script>
+<script type='text/javascript'>
+$(function() {  
+  $('#dashang').on('click', function(e) {
+      $.post('/cece/checkResult',{money:$('#selectMoney').val()},
+      function(data) {
+        window.location.href=data;
+      });
+  });
+});
+</script>
+</body>

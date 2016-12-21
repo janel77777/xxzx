@@ -1,0 +1,49 @@
+  <!DOCTYPE html>
+  <html lang="zh-cmn-Hans">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>抢答</title>
+    <link rel="stylesheet" href="../stylesheets/weui.css"/>
+    <link rel="stylesheet" href="../stylesheets/example.css"/> 
+    <link rel="stylesheet" href="../css/style.css"/> 
+  </head>
+  <body ontouchstart>
+   <div class="container" id="container"> 
+
+
+     <div class="weui-panel">
+      <div class="weui-panel__hd">问题列表</div>
+      <div class="weui-panel__bd">
+
+           <%questionlists.forEach(function(row,index){  %>
+       <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+
+          <div class="weui-media-box__hd">
+            <img class="weui-media-box__thumb" src="<%= row.userinfo.headimgurl %>" alt="">
+          </div>
+          <div class="weui-media-box__bd">
+            <h4 class="weui-media-box__title"><%= row.userinfo.nickname %></h4>
+            <p class="weui-media-box__desc"><%= row.question %></p>
+            <p style="font-size: 7px">回答数量<span>2</span></p>
+          </div>
+        </a>
+<%})%>
+        
+      </div>
+
+
+    </div>
+  </div>
+<script src="../js/zepto.min.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="../js/weui.min.js"></script>
+<script type="text/javascript">
+$(function(){
+$('a').on('click',function() {
+   window.location.href="/question/questiondetail?questionid="+ 222;
+});
+});
+</script>
+</body>
+

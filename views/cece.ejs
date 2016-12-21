@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <title>占星骰子</title>
+  <link rel="stylesheet" href="../stylesheets/weui.css"/>
+  <link rel="stylesheet" href="../stylesheets/example.css"/> 
+  <link rel="stylesheet" href="../css/style.css"/> 
+</head>
+
+<body ontouchstart>
+ <div class="container" id="container"> 
+   <div id="main">
+     <div class="page__hd"> 
+      <div class="weui-flex__item"> 
+       <h1 style="text-align: center" class="page__title">占星骰子</h1> 
+     </div> 
+   </div> 
+   <div class="weui-flex"> 
+    <div class="weui-cell__bd"> 
+     <textarea class="weui-textarea" placeholder="请描述［想解决的问题＋你的情况]. 每次限提一个具体的问题，智能占卜近3个月的问题。" id="question" rows="3"></textarea> 
+
+
+     <div class="weui-textarea-counter">
+      <span id="questionCharterCount">0</span>/200
+    </div> 
+  </div> 
+</div> 
+<div class="weui-flex"> 
+  <div class="weui-cell__bd"> 
+   <a class="weui-btn weui-btn_primary" id="showCeceResult" disabled="disabled"><i>向骰子发问</i></a> 
+ </div> 
+</div> 
+<div class="weui-flex" id="ceceResult" style="display: none;"> 
+  <div class="weui-flex__item" align="center"> 
+   <div id="picxp" class="div-radius "> 
+   </div> 
+   <span id="txtxp"></span> 
+ </div> 
+ <div class="weui-flex__item" align="center"> 
+   <div id="picxz" class="div-radius"> 
+   </div> 
+   <span id="txtxz"></span> 
+ </div> 
+ <div class="weui-flex__item" align="center"> 
+   <div id="picg" class="div-radius"> 
+   </div> 
+   <span id="txtg"></span> 
+ </div> 
+</div> 
+<div class="weui-flex"> 
+  <div class="weui-flex__item"> 
+   <h1 style="text-align: center" class="page__title">your logo</h1> 
+ </div> 
+</div> 
+<div class="weui-flex"> 
+  <div class="weui-flex__item"> 
+   <h3 style="text-align: center" class="page__title"> [占星骰子] 有问必答<br /> 心诚则灵<br /> 只给启示不给答案<br /> </h3> 
+ </div> 
+</div> 
+<div class="weui-flex"> 
+  <div class="weui-flex__item"> 
+   <div class="placeholder"> 
+    <a href="javascript:;" data-id="visitAnswer" class="weui-btn weui-btn_mini weui-btn_primary" id="answer" style="visibility:hidden">查看解释</a> 
+  </div> 
+</div> 
+<div class="placeholder"> 
+ <a href="javascript:;" id="backrepick" class="weui-btn weui-btn_mini weui-btn_primary" style="visibility:hidden">返回重投</a>
+</div> 
+</div> 
+<div class="weui-flex"> 
+  <div class="weui-flex__item"> 
+
+    <a href="javascript:;" id='sentquestion' class="weui-btn weui-btn_mini weui-btn_primary" style="visibility:hidden">咨询达人</a>
+  </div> 
+</div> 
+</div>
+<!--  <a href="javascript:;"   class="weui-btn weui-btn_mini weui-btn_primary"  id="returnLink">返回</a> -->
+<div id="divExplain"></div>
+</div>
+
+<script type="text/html" id="tpl_visitAnswer" >
+<div class=""> 
+<div class="page__hd"> 
+<div class="weui-flex__item">  
+
+<h1 style="text-align: center" class="page__title" >查看骰子解释</h1> 
+</div> 
+</div> 
+<div class="detailTitle" id="dTitle"></div>
+<div class="weui-flex" id="">  
+<div class="weui-flex__item" align="center">  
+<div id="dPicxp" class="div-radius"></div> 
+<span id="dTxtxp"></span> 
+</div> 
+<div class="weui-flex__item" align="center"> 
+<div id="dPicxz" class="div-radius"></div> 
+<span id="dTxtxz"></span> 
+</div> 
+<div class="weui-flex__item" align="center"> 
+<div id="dPicg" class="div-radius"></div> 
+<span id="dTxtg"></span> 
+</div>
+</div>  
+<div class="weui-flex"> 
+<div class="weui-flex__item"> 
+<span id="xp_explain" class="detailExplain"></span> 
+</div> 
+</div> 
+<br/>
+<div class="weui-flex"> 
+<div class="weui-flex__item"> 
+<span id="xz_explain" class="detailExplain"></span> 
+</div> 
+</div>
+<br/>
+<div class="weui-flex"> 
+<div class="weui-flex__item"> 
+<span id="g_explain" class="detailExplain"></span> 
+</div> 
+</div> 
+<br/>
+<div align="center"> <img src="../img/icon_footer_link.png" id="returnLink"></div>
+
+</div>
+</script>
+
+
+<script src="../js/zepto.min.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="../js/weui.min.js"></script>
+<script type="text/javascript">
+$(function(){
+
+
+  $('#sentquestion').on('click', function(e) {
+
+    $.get('/cece/sentquestion',{xp:$('#txtxp').text(),
+      xz:$('#txtxz').text(),
+      gd:$('#txtg').text(),
+      question:$('#question').val()},
+      function(data) {
+        // 此处的callback function中的data为server返回的数据(没有数据也可)
+        window.location.href="/cece/checkResult";
+      });
+  });
+
+
+  var SetQuestion = function(){
+    $('#ceceResult').show('slow');
+    $('#showCeceResult').addClass("weui-btn_disabled");
+    $('#question').attr("disabled", "disabled");
+    $('#answer').css("visibility", "visible");
+    $("#sentquestion").css("visibility", "visible");
+    $('#backrepick').css("visibility", "visible");
+       // $('#showCeceResult').unbind('click');
+     };
+
+     $('#question').on('keyup',function() {
+      $('#questionCharterCount').html($('#question').val().length);
+    });
+
+
+     $('#showCeceResult').on('click',function() {
+
+       SetQuestion();
+       var timesRun = 0;
+       var interval = setInterval(function() {
+        timesRun += 1;
+        if (timesRun === 10) {
+          clearInterval(interval);
+        }
+            //do whatever here..
+            GetRandomPic();
+          },50);
+     });
+
+     
+     var GetRandomPic = function GetRandomPic() {
+
+      var xpCssName = "";
+     var xzCssName = "";
+     var gCssName = "";
+     var xpName="";
+     var xzName="";
+     var gName="";
+
+      $.getJSON('../json/astrolabe.json',function(data) {
+        var id = Math.floor(Math.random() * 12);
+        $("#picxp").removeClass(xpCssName);
+        xpCssName = data[id].pic;
+        xpName=data[id].keyName;
+        $("#picxp").addClass(data[id].pic);
+        $("#txtxp").text(data[id].keyName);
+      }); 
+
+      $.getJSON('../json/constellation.json',function(data) {
+        var id = Math.floor(Math.random() * 12);
+        $("#picxz").removeClass(xzCssName);
+        xzCssName = data[id].pic;
+        xzName=data[id].keyName;
+        $("#picxz").addClass(data[id].pic);
+        $("#txtxz").text(data[id].keyName);
+      }); 
+
+      $.getJSON('../json/RomanCharacter.json',function(data) {
+        var id = Math.floor(Math.random() * 12);
+        $("#picg").removeClass(gCssName);
+        gCssName = data[id].pic;
+        gName=data[id].keyName;
+        $("#picg").addClass(data[id].pic);
+        $("#txtg").text(data[id].keyName);
+      }); 
+
+    };
+
+    $('#backrepick').on('click',function() {
+
+     $('#ceceResult').hide('slow');
+     $('#showCeceResult').removeClass("weui-btn_disabled");
+     $('#question').removeAttr("disabled");
+     $("#sentquestion").css("visibility", "hidden");
+     $('#answer').css("visibility", "hidden");
+     $('#backrepick').css("visibility", "hidden");
+     $('#question').val("");
+        // $('#showCeceResult').on('click',function() {
+        //     SetQuestion();
+        // });
+  });
+    
+    $("#answer").on('click',function(){
+
+     var html = document.getElementById("tpl_visitAnswer").innerHTML;
+     $("#main").hide();
+     $('#divExplain').show();
+     if ($('#divExplain').children().length==0) {
+      $("#divExplain").append(html);
+    };
+
+    $('#returnLink').on('click',function() { 
+
+     $('#divExplain').hide(); 
+     $('#main').show();  
+   });
+
+    $("#dTitle").text("投出了  [ "+xpName+" "+xzName+" "+gName+" ]"); 
+
+    $.getJSON('../json/astrolabe.json',function(data) {
+      for(var k in data) { 
+        if (data[k].keyName==xpName) {
+          $("#dPicxp").addClass(data[k].pic);
+          $("#dTxtxp").text(data[k].keyName); 
+          $("#xp_explain").html(data[k].description); 
+          return;
+        };
+      }
+    });
+
+    $.getJSON('../json/constellation.json',function(data) {
+      for(var k in data) { 
+        if (data[k].keyName==xzName) {
+          $("#dPicxz").addClass(data[k].pic);
+          $("#dTxtxz").text(data[k].keyName);
+          $("#xz_explain").html(data[k].description); 
+          return;
+        };
+      }
+    });
+
+    $.getJSON('../json/RomanCharacter.json',function(data) {
+      for(var k in data) { 
+        if (data[k].keyName==gName) {
+          $("#dPicg").addClass(data[k].pic);
+          $("#dTxtg").text(data[k].keyName);
+          $("#g_explain").html(data[k].description); 
+          return;
+        };
+      }
+    });
+
+  });
+
+});
+
+</script>
+
+</body>
+</html>
